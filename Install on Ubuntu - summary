@@ -1,0 +1,47 @@
+### Install dependencies 
+Execute the following lines in your Ubuntu environment: 
+sudo apt-get install build-essential
+sudo apt-get install autoconf
+sudo apt-get install subversion
+sudo apt-get install libxml2-dev
+sudo apt-get install libnetcdf-dev
+sudo apt-get install gawk
+Lastly, you need proj.4. This is special, and you need to do the following in the Ubuntu environment: 
+    wget http://download.osgeo.org/proj/proj-5.2.0.tar.gz
+    mkdir ~/proj
+    mv proj-5.2.0.tar.gz ~/proj/
+    cd proj
+    tar -zxvf proj-5.2.0.tar.gz
+    cd proj-5.2.0
+    sudo ./configure
+    sudo make
+    sudo make install
+Optional, you should also get vim for opening/editing text files:
+sudo apt-get install vim (optional)
+
+### Installation of atlantis
+To get the most up-to-date version of the atlantis-trunk from CSIRO, you need to enter the following in the Ubuntu environment:
+svn co https://svnserv.csiro.au/svn/ext/atlantis/Atlantis/trunk/atlantis
+To get a specific version (e.g., 6665), you need to enter the following in the Ubuntu environment:
+svn co -r 6665 https://svnserv.csiro.au/svn/ext/atlantis/Atlantis/trunk/atlantis
+Now, atlantisMerged needs to be built. To do that, you need to execute the following in the Ubuntu environment (The following steps are a merger of steps from Javier and the wiki):
+mkdir [some folder where you will keep your versions of atlantis code, e.g. AtlantisTrunks]
+cd [some folder where you will keep your versions of atlantis code, e.g. AtlantisTrunks]
+aclocal
+autoheader
+autoconf
+automake -a # may have warnings 
+autoreconf -fvi # fix some links
+./configure
+sudo make CFLAGS='-Wno-misleading-indentation -Wno-format -Wno-implicit-fallthrough'  
+sudo make install
+
+May need to open and edit PreRules.am file and edit WARN lines appropriately
+When checking atlantisMerged; if you get a ‘error while loading shared libraries’ message, run line:
+sudo ldconfig
+      And then re-run 
+Check the executable by going into the atlantismain folder and entering the following into the Ubuntu environment
+./atlantisMerged
+
+Make a virtual link to the build exe in the folder with inputs. First, go to the directory with your inputs and type the following into the Ubuntu environment:
+ln -sf [location of atlantisMerged] [name of model-link]
